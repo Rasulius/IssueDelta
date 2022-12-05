@@ -18,6 +18,7 @@ type
     OpenDialog: TOpenDialog;
 
     procedure CreateSearchFormButtonClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure LoadDocumentButtonClick(Sender: TObject);
   private
     FText: TStringList;
@@ -57,8 +58,8 @@ end;
 
 procedure TMainForm.LoadDocumentButtonClick(Sender: TObject);
 begin
-  if OpenDialog.Execute then begin
-    FText.LoadFromFile(OpenDialog.FileName);
+ if OpenDialog.Execute then begin
+   FText.LoadFromFile(OpenDialog.FileName);
   end;
 end;
 
@@ -89,7 +90,10 @@ begin
   PrintAllSearchForms;
 end;
 
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
 
+end;
 
 end.
 
