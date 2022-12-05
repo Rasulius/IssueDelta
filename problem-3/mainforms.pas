@@ -18,10 +18,9 @@ type
     OpenDialog: TOpenDialog;
 
     procedure CreateSearchFormButtonClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure LoadDocumentButtonClick(Sender: TObject);
   private
-    FText: TStrings;
+    FText: TStringList;
     procedure PrintAllSearchForms;
   protected
     procedure OnCloseSearchForm(Sender: TObject; var CloseAction: TCloseAction);
@@ -47,7 +46,7 @@ uses searchforms;
 constructor TMainForm.Create(anOwner: TComponent);
 begin
   inherited Create(anOwner);
-  FText := TStrings.Create;
+  FText := TStringList.Create;
 end;
 
 destructor TMainForm.Destroy;
@@ -58,8 +57,8 @@ end;
 
 procedure TMainForm.LoadDocumentButtonClick(Sender: TObject);
 begin
- if OpenDialog.Execute then begin
-   FText.LoadFromFile(OpenDialog.FileName);
+  if OpenDialog.Execute then begin
+    FText.LoadFromFile(OpenDialog.FileName);
   end;
 end;
 
@@ -90,10 +89,7 @@ begin
   PrintAllSearchForms;
 end;
 
-procedure TMainForm.FormCreate(Sender: TObject);
-begin
-  //
-end;
+
 
 end.
 

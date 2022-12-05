@@ -7,10 +7,10 @@ object SearchForm: TSearchForm
   ClientHeight = 412
   ClientWidth = 582
   OnClose = FormClose
-  LCLVersion = '2.0.10.0'
-  object Memo1: TMemo
+  LCLVersion = '2.2.2.0'
+  object DocumentMemo: TMemo
     Left = 8
-    Height = 226
+    Height = 224
     Top = 74
     Width = 566
     Align = alTop
@@ -27,7 +27,7 @@ object SearchForm: TSearchForm
     )
     TabOrder = 0
   end
-  object Panel1: TPanel
+  object TopPanel: TPanel
     Left = 0
     Height = 66
     Top = 0
@@ -36,40 +36,40 @@ object SearchForm: TSearchForm
     ClientHeight = 66
     ClientWidth = 582
     TabOrder = 1
-    object Edit1: TEdit
+    object SearchEdit: TEdit
       Left = 8
-      Height = 23
+      Height = 25
       Top = 5
       Width = 467
       Anchors = [akTop, akLeft, akRight]
       TabOrder = 0
       TextHint = 'Введите строку поиска'
     end
-    object Button1: TButton
+    object FindButton: TButton
       Left = 481
       Height = 25
       Top = 5
       Width = 91
       Anchors = [akTop, akRight]
       Caption = 'Найти текст'
-      OnClick = Button1Click
+      OnClick = FindButtonClick
       TabOrder = 1
     end
-    object Button2: TButton
+    object FindNextButton: TButton
       Left = 481
       Height = 25
       Top = 32
       Width = 91
       Anchors = [akTop, akRight]
       Caption = 'Найти далее...'
-      OnClick = Button2Click
+      OnClick = FindNextButtonClick
       TabOrder = 2
     end
   end
-  object Label1: TLabel
+  object Statistic: TLabel
     Left = 8
-    Height = 15
-    Top = 300
+    Height = 17
+    Top = 298
     Width = 566
     Align = alTop
     BorderSpacing.Left = 8
@@ -77,7 +77,7 @@ object SearchForm: TSearchForm
     Caption = 'Статистика:'
     ParentColor = False
   end
-  object ListBox1: TListBox
+  object InformationList: TListBox
     Left = 8
     Height = 84
     Top = 320
