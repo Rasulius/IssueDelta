@@ -1,0 +1,41 @@
+object MainForm: TMainForm
+  Left = 256
+  Height = 337
+  Top = 145
+  Width = 449
+  Caption = 'MainForm'
+  ClientHeight = 337
+  ClientWidth = 449
+  OnCreate = FormCreate
+  LCLVersion = '2.0.10.0'
+  object SearchFormsList: TListBox
+    Left = 8
+    Height = 320
+    Top = 8
+    Width = 280
+    ItemHeight = 0
+    TabOrder = 0
+  end
+  object CreateSearchFormButton: TButton
+    Left = 296
+    Height = 25
+    Top = 40
+    Width = 147
+    Caption = 'Создать форму поиска'
+    OnClick = CreateSearchFormButtonClick
+    TabOrder = 1
+  end
+  object LoadDocumentButton: TButton
+    Left = 296
+    Height = 25
+    Top = 8
+    Width = 147
+    Caption = 'Загрузить'
+    OnClick = LoadDocumentButtonClick
+    TabOrder = 2
+  end
+  object OpenDialog: TOpenDialog
+    Left = 296
+    Top = 72
+  end
+end

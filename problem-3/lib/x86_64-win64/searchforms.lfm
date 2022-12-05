@@ -1,0 +1,92 @@
+object SearchForm: TSearchForm
+  Left = 321
+  Height = 412
+  Top = 282
+  Width = 582
+  Caption = 'SearchForm'
+  ClientHeight = 412
+  ClientWidth = 582
+  OnClose = FormClose
+  LCLVersion = '2.0.10.0'
+  object Memo1: TMemo
+    Left = 8
+    Height = 226
+    Top = 74
+    Width = 566
+    Align = alTop
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
+    BorderSpacing.Right = 8
+    Lines.Strings = (
+      'Мы любим животных и стараемся поддерживать тех из них, '
+      'кому не посчастливилось иметь ласковых хозяев и тёплый кров. '
+      'Один из проверенных способов это сделать — помочь приюту для животных '
+      'Домашний. У этих ребят живёт более 1500 четвероногих, '
+      'и благодаря их труду ежегодно сотни питомцев находят свой новый дом.'
+    )
+    TabOrder = 0
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 66
+    Top = 0
+    Width = 582
+    Align = alTop
+    ClientHeight = 66
+    ClientWidth = 582
+    TabOrder = 1
+    object Edit1: TEdit
+      Left = 8
+      Height = 23
+      Top = 5
+      Width = 467
+      Anchors = [akTop, akLeft, akRight]
+      TabOrder = 0
+      TextHint = 'Введите строку поиска'
+    end
+    object Button1: TButton
+      Left = 481
+      Height = 25
+      Top = 5
+      Width = 91
+      Anchors = [akTop, akRight]
+      Caption = 'Найти текст'
+      OnClick = Button1Click
+      TabOrder = 1
+    end
+    object Button2: TButton
+      Left = 481
+      Height = 25
+      Top = 32
+      Width = 91
+      Anchors = [akTop, akRight]
+      Caption = 'Найти далее...'
+      OnClick = Button2Click
+      TabOrder = 2
+    end
+  end
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 300
+    Width = 566
+    Align = alTop
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    Caption = 'Статистика:'
+    ParentColor = False
+  end
+  object ListBox1: TListBox
+    Left = 8
+    Height = 84
+    Top = 320
+    Width = 566
+    Align = alBottom
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    BorderSpacing.Bottom = 8
+    ItemHeight = 0
+    TabOrder = 2
+  end
+end

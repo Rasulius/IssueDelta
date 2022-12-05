@@ -1,0 +1,85 @@
+object TSearchForm: TTSearchForm
+  Left = 321
+  Height = 412
+  Top = 282
+  Width = 426
+  Caption = 'TSearchForm'
+  ClientHeight = 412
+  ClientWidth = 426
+  LCLVersion = '2.0.10.0'
+  object Memo1: TMemo
+    Left = 8
+    Height = 234
+    Top = 66
+    Width = 410
+    Align = alTop
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    Lines.Strings = (
+      'Memo1'
+    )
+    TabOrder = 0
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 66
+    Top = 0
+    Width = 426
+    Align = alTop
+    ClientHeight = 66
+    ClientWidth = 426
+    TabOrder = 1
+    object Edit1: TEdit
+      Left = 8
+      Height = 23
+      Top = 5
+      Width = 311
+      Anchors = [akTop, akLeft, akRight]
+      TabOrder = 0
+      Text = 'Edit1'
+    end
+    object Button1: TButton
+      Left = 325
+      Height = 25
+      Top = 5
+      Width = 91
+      Anchors = [akTop, akRight]
+      Caption = 'Найти текст'
+      OnClick = Button1Click
+      TabOrder = 1
+    end
+    object Button2: TButton
+      Left = 325
+      Height = 25
+      Top = 32
+      Width = 91
+      Anchors = [akTop, akRight]
+      Caption = 'Найти далее...'
+      TabOrder = 2
+    end
+  end
+  object Label1: TLabel
+    Left = 8
+    Height = 15
+    Top = 300
+    Width = 410
+    Align = alTop
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    Caption = 'Статистика:'
+    ParentColor = False
+  end
+  object ListBox1: TListBox
+    Left = 8
+    Height = 80
+    Top = 324
+    Width = 410
+    Align = alBottom
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    BorderSpacing.Bottom = 8
+    ItemHeight = 0
+    TabOrder = 2
+  end
+end
