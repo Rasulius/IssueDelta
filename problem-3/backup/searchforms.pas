@@ -6,15 +6,21 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, LazUTF8, syncobjs, DateUtils;
+  ExtCtrls, Buttons, LazUTF8, syncobjs, DateUtils;
+
+const
+  MaxBufferSize = 50;
 
 type
   { TSearchForm }
   TSearchStatus = (ssFind, ssNotFind, ssTimout);
   TTextSearchThread = class;
-  TShowStatusEvent = procedure(FStartTime, FEndTime: TTime; SearchStatus: TSearchStatus) of Object;
+  TShowStatusEvent = procedure(FStartTime, FEndTime: TTime; SearchStatus: TSearchStatus; var Offset: Integer; var PorionIndex: Integer) of Object;
+  TOnCloseFormEvent = procedure(const FormName: String; Sender: TObject; var CloseAction: TCloseAction) of Object;
+  TSearchSettigns = (ssFindFirst, ssFindNext);
 
   TSearchForm = class(TForm)
+    CleanButton: TButton;
     FindFirstButton: TButton;
     FindNextButton: TButton;
     SearchLine: TEdit;
@@ -22,20 +28,26 @@ type
     ReportBox: TListBox;
     DocumentMemo: TMemo;
     TopPanel: TPanel;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure CleanButtonClick(Sender: TObject);
     procedure FindFirstButtonClick(Sender: TObject);
     procedure FindNextButtonClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
 
   private
-    FTextSearcher: TTextSearchThread;
+    FOnCloseFormEvent: TOnCloseFormEvent;
     FText: TStringList;
     FFindIndex: Integer;
-    FEvent: TEvent;
+    FThreadIndex: Integer;
+    FPortionIndex: Integer;
+    FUnicalEventName: String;
   public
     constructor Create(anOwner: TComponent; aText: TStringList); overload;
     destructor Destroy; override;
 
-    procedure OnFindText(FStartTime, FEndTime: TTime; SearchStatus: TSearchStatus);
+    procedure OnFindText(FStartTime, FEndTime: TTime; SearchStatus: TSearchStatus; var Offset: Integer; var PorionIndex: Integer);
+
+    property OnCloseFormEvent: TOnCloseFormEvent read FOnCloseFormEvent write FOnCloseFormEvent;
   end;
 
 type
@@ -54,6 +66,8 @@ type
     FSearchStatus: TSearchStatus;
     FPortionIndex: Integer;
     FFindPosition: Integer;
+    FUnicalEventName: String;
+    FSearchSettings: TSearchSettigns;
     { начало и конец запуска }
     FStartTime: TTime;
     FEndTime: TTime;
@@ -61,17 +75,16 @@ type
     procedure Execute; override;
     procedure ShowStatus();
   public
-    constructor Create(CreateSuspendedThread: Boolean; anEvent: TEvent; WaitingTime: Integer = 100);
-    procedure Init(const FindText: String; AllText: TStrings; Offset: Integer = 1);
+    constructor Create(CreateSuspendedThread: Boolean;aSearchSetting: TSearchSettigns; const UnicalEventName: String; WaitingTime: Integer = 100);
+    procedure Init(const FindText: String; AllText: TStrings; Offset: Integer = 1; PortionIndex: Integer = 0);
 
     destructor Destroy; override;
-
     property OnShowStatus: TShowStatusEvent read FOnShowStatus write FOnShowStatus;
   end;
 
+{ OWner - владелец, aText - переданный текст, OnCloseEvent - событие кэлбак при закрытии формы}
 
-
-procedure ShowSearchForm(Owner: TComponent; aText: TStringList);
+procedure ShowSearchForm(Owner: TComponent; aText: TStringList; OnCloseFormEvent: TOnCloseFormEvent = nil);
 
 var
   SearchForm: TSearchForm;
@@ -82,13 +95,18 @@ implementation
 
 {$R *.lfm}
 
-procedure ShowSearchForm(Owner: TComponent;  aText: TStringList);
+procedure ShowSearchForm(Owner: TComponent;  aText: TStringList; OnCloseFormEvent: TOnCloseFormEvent = nil);
 var
   SearchForm: TSearchForm;
 begin
   SearchForm := TSearchForm.Create(Owner, aText);
   try
     SearchForm.Name := 'MyForm' + IntToStr(FormCount);
+
+    if Assigned(OnCloseFormEvent) then begin
+      SearchForm.OnCloseFormEvent := OnCloseFormEvent;
+    end;
+
     Inc(FormCount);
     SearchForm.Show;
   except
@@ -96,29 +114,149 @@ begin
   end;
 end;
 
+
+
+{ TSearchForm }
+
+procedure TSearchForm.FindFirstButtonClick(Sender: TObject);
+var
+  FTextSearcher: TTextSearchThread;
+begin
+  { Можно в принципе использовать Guid но во время отлаки проще использовать именнованные формы с счетчиком, генерар имен
+  можно реализовать и через шаблон фабрику без слома функционала }
+  Inc(FThreadIndex);
+  FUnicalEventName := Self.Name + IntToStr(FThreadIndex);
+  FTextSearcher := TTextSearchThread.Create(True,ssFindFirst, FUnicalEventName);
+  FTextSearcher.Init(SearchLine.Text, DocumentMemo.Lines, 1, 0);
+  FTextSearcher.OnShowStatus:= @OnFindText;
+  FTextSearcher.Start;
+end;
+
+procedure TSearchForm.BitBtn1Click(Sender: TObject);
+begin
+
+end;
+
+procedure TSearchForm.CleanButtonClick(Sender: TObject);
+begin
+  ReportBox.Clear;
+end;
+
+procedure TSearchForm.FindNextButtonClick(Sender: TObject);
+var
+  FTextSearcher: TTextSearchThread;
+begin
+  Inc(FThreadIndex);
+  FUnicalEventName := Self.Name + IntToStr(FThreadIndex);
+  FTextSearcher := TTextSearchThread.Create(True,ssFindNext, FUnicalEventName);
+  FTextSearcher.Init(SearchLine.Text, DocumentMemo.Lines, FFindIndex, FPortionIndex);
+  FTextSearcher.OnShowStatus:= @OnFindText;
+  FTextSearcher.Start;
+end;
+
+procedure TSearchForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  CloseAction := caFree;
+  if Assigned(FOnCloseFormEvent) then begin
+    FOnCloseFormEvent(Self.Name, Sender, CloseAction);
+  end;
+end;
+
+constructor TSearchForm.Create(anOwner: TComponent; aText: TStringList);
+begin
+  inherited Create(anOwner);
+  FThreadIndex := 1;
+  FText := TStringList.Create;
+
+  if Length(aText.Text) >0 then begin
+    FText.Assign(aText);
+    DocumentMemo.Lines.Assign(FText);
+  end;
+
+end;
+
+destructor TSearchForm.Destroy;
+begin
+  FText.Free;
+  FOnCloseFormEvent := nil;
+  inherited Destroy;
+end;
+
+procedure TSearchForm.OnFindText(FStartTime, FEndTime: TTime; SearchStatus: TSearchStatus; var Offset: Integer; var PorionIndex: Integer);
+Const
+  ColumnCaption = 'Время старта Время завершения  Успех    Время выполнения';
+  TextCaption   = '%s           %s       %s    %s';
+begin
+  case  SearchStatus of
+     ssFind: begin
+       ReportBox.Items.Add(ColumnCaption);
+       ReportBox.Items.Add(Format(TextCaption,
+        [FormatDateTime('hh:nn:ss:zzz', FStartTime),
+        FormatDateTime('hh:nn:ss:zzz', FEndTime) ,
+        'Да ('+ IntToStr(Offset+PorionIndex*MaxBufferSize)+')',
+        FormatDateTime('hh:nn:ss:zzz',FEndTime - FStartTime)
+        ]));
+       FFindIndex := Offset;
+       FPortionIndex := PorionIndex;
+     end;
+     ssNotFind: begin
+       ReportBox.Items.Add(ColumnCaption);
+       ReportBox.Items.Add(Format(TextCaption,
+        [FormatDateTime('hh:nn:ss:zzz', FStartTime),
+        FormatDateTime('hh:nn:ss:zzz', FEndTime) ,
+        'Нет (не найдено)',
+        FormatDateTime('hh:nn:ss:zzz',FEndTime - FStartTime)
+        ]));
+       FFindIndex :=1;
+       FPortionIndex:=0;
+     end;
+     ssTimout: begin
+       ReportBox.Items.Add(ColumnCaption);
+       ReportBox.Items.Add(Format(TextCaption,
+        [FormatDateTime('hh:nn:ss:zzz', FStartTime),
+        FormatDateTime('hh:nn:ss:zzz', FEndTime) ,
+        'Нет(Таймаут)',
+        FormatDateTime('hh:nn:ss:zzz',FEndTime - FStartTime)
+        ]));
+        FFindIndex := Offset;
+        FPortionIndex := PorionIndex;
+     end;
+  end
+end;
+
+
 { TTextSearchThread }
 
-constructor TTextSearchThread.Create(CreateSuspendedThread: Boolean; anEvent: TEvent; WaitingTime: Integer = 100);
+constructor TTextSearchThread.Create(CreateSuspendedThread: Boolean;aSearchSetting: TSearchSettigns;
+  const UnicalEventName: String; WaitingTime: Integer = 100);
 begin
   inherited Create(CreateSuspendedThread);
   FTextLength := 0;
-  FFindIndex := 1;
+  FFindIndex := 0;
   FreeOnTerminate := True;
-  FEvent := anEvent;
+  FSearchSettings:= aSearchSetting;
   FWaitingTime := WaitingTime;
-  FBufferSize:= 50;
+  FBufferSize:= MaxBufferSize;
+
+  FUnicalEventName := UnicalEventName;
+  FEvent := TEvent.Create(nil,False, False, UnicalEventName);
+  FEvent.SetEvent;
 end;
 
-procedure TTextSearchThread.Init(const FindText: String; AllText: TStrings; Offset: Integer);
+procedure TTextSearchThread.Init(const FindText: String; AllText: TStrings; Offset: Integer; PortionIndex: Integer = 0);
+const
+  RestartSearch = 1;
 begin
   FFindText := FindText;
   FFindIndex := Offset;
   FText := AllText.Text;
-  FTextLength:= Utf8Length(FText);
+  FTextLength := Utf8Length(FText);
+  FPortionIndex:= PortionIndex;
 end;
 
 destructor TTextSearchThread.Destroy;
 begin
+  FEvent.Free;
   Terminate;
   inherited Destroy;
 end;
@@ -133,7 +271,6 @@ var
   DiffTime: Extended;
   TEMP: Integer;
 begin
-  FPortionIndex := 0;
   PortionSize := FBufferSize;
   FSearchStatus := ssNotFind;
 
@@ -143,37 +280,58 @@ begin
     StopSearch := False;
     StartIndex := 0;
     PortionSize := FBufferSize;
-    FPortionIndex := 0;
-    FFindIndex := 1;
     FFindPosition := 0;
     while not StopSearch do begin
       if ((StartIndex + PortionSize) > FTextLength) then begin
         PortionSize := FTextLength - StartIndex;
         StopSearch := True;
       end;
-      Sleep(1); // Имитация замедления
+      Sleep(40); // Имитация замедления алгоритма
+      StartIndex := FPortionIndex*PortionSize + FFindIndex;
+      Portion := Utf8Copy(FText, FPortionIndex * PortionSize + 1, PortionSize);
+      FFindIndex := Utf8Pos(FFindText, Portion, FFindIndex + 1);
 
-      Portion := Copy(FText, StartIndex, PortionSize*2);
-      FFindIndex := Pos(FFindText, Portion, 1);
+      if FFindIndex = 0 then begin
+        Inc(FPortionIndex);
+        FFindIndex:= 1;
+        Continue;
+      end;
+
       FEndTime := Now;
       DiffTime:=  MillisecondOfTheDay(FStartTime-FEndTime);
 
        { timeout }
-      if(DiffTime> FWaitingTime) then begin
+      if(DiffTime> FWaitingTime)  then begin
         StopSearch := True;
         FSearchStatus := ssTimout;
         Synchronize(@ShowStatus);
+        Terminate;
+        Break;
       end;
 
       { find }
 
-      if FFindIndex > 0 then begin
+      if (FFindIndex > 0) and (not StopSearch) then begin
         FSearchStatus := ssFind;
+
         Synchronize(@ShowStatus);
+
+        if FSearchSettings = ssFindFirst then begin
+           FPortionIndex := 0;
+           FFindIndex:= 0;
+        end;
+        Terminate;
         Break;
       end;
+
+      {Сброс поиска в начало текста}
+
+      if StopSearch then begin
+         FFindIndex:= 1;
+      end;
+
       StartIndex := StartIndex + 2*PortionSize;
-      Inc(FPortionIndex);
+
     end;
     FEvent.ResetEvent;
 
@@ -183,100 +341,10 @@ begin
 end;
 
 procedure TTextSearchThread.ShowStatus();
-var
-  Length: Integer;
 begin
   if Assigned(FOnShowStatus) then begin
-    FOnShowStatus(FStartTime, FEndTime, FSearchStatus);
+    FOnShowStatus(FStartTime, FEndTime, FSearchStatus, FFindIndex, FPortionIndex);
   end;
-end;
-
-{ TSearchForm }
-
-procedure TSearchForm.FindFirstButtonClick(Sender: TObject);
-begin
-  ReportBox.Items.Clear;
-  FTextSearcher.Init(SearchLine.Text, DocumentMemo.Lines);
-  FEvent.SetEvent;
-  FTextSearcher.Start;
-end;
-
-procedure TSearchForm.FindNextButtonClick(Sender: TObject);
-begin
-  ReportBox.Items.Clear;
-  FTextSearcher.Init(SearchLine.Text, DocumentMemo.Lines, FFindIndex + 2);
-  FEvent.SetEvent;
-  FTextSearcher.Start;
-end;
-
-procedure TSearchForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-begin
-  FTextSearcher.Terminate;
-  CloseAction := caFree;
-end;
-
-
-
-constructor TSearchForm.Create(anOwner: TComponent; aText: TStringList);
-begin
-  inherited Create(anOwner);
-  FText := TStringList.Create;
-
-  if Length(aText.Text) >0 then begin
-    FText.Assign(aText);
-    DocumentMemo.Lines.Assign(FText);
-  end;
-
-
-  FEvent := TEvent.Create(nil,False, False, 'SearchThreadEvent'+IntToStr(FormCount));
-  FTextSearcher := TTextSearchThread.Create(True, FEvent);
-  FTextSearcher.OnShowStatus:= @OnFindText;
-  FFindIndex := 1;
-end;
-
-destructor TSearchForm.Destroy;
-begin
-  FTextSearcher.Terminate;
-  FEvent.ResetEvent;
-  FEvent.Free;
-  FText.Free;
-  inherited Destroy;
-end;
-
-procedure TSearchForm.OnFindText(FStartTime, FEndTime: TTime; SearchStatus: TSearchStatus);
-Const
-  ColumnCaption = 'Время старта Время завершения Успех Время выполнения';
-  TextCaption   = '%s           %s                     %s    %s';
-begin
-  case  SearchStatus of
-     ssFind: begin
-       ReportBox.Items.Add(ColumnCaption);
-       ReportBox.Items.Add(Format(TextCaption,
-        [FormatDateTime('hh:nn:ss:zzz', FStartTime),
-        FormatDateTime('hh:nn:ss:zzz', FEndTime) ,
-        'Да',
-        FormatDateTime('hh:nn:ss:zzz',FEndTime - FStartTime)
-        ]));
-     end;
-     ssNotFind: begin
-       ReportBox.Items.Add(ColumnCaption);
-       ReportBox.Items.Add(Format(TextCaption,
-        [FormatDateTime('hh:nn:ss:zzz', FStartTime),
-        FormatDateTime('hh:nn:ss:zzz', FEndTime) ,
-        'Да',
-        FormatDateTime('hh:nn:ss:zzz',FEndTime - FStartTime)
-        ]));
-     end;
-     ssTimout: begin
-       ReportBox.Items.Add(ColumnCaption);
-       ReportBox.Items.Add(Format(TextCaption,
-        [FormatDateTime('hh:nn:ss:zzz', FStartTime),
-        FormatDateTime('hh:nn:ss:zzz', FEndTime) ,
-        'Да',
-        FormatDateTime('hh:nn:ss:zzz',FEndTime - FStartTime)
-        ]));
-     end;
-  end
 end;
 
 end.

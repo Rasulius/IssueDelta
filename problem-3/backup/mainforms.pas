@@ -22,9 +22,9 @@ type
     procedure LoadDocumentButtonClick(Sender: TObject);
   private
     FText: TStringList;
-    procedure PrintAllSearchForms;
+    procedure PrintAllSearchForms(const ClosedForm: String = '');
   protected
-    procedure OnCloseSearchForm(Sender: TObject; var CloseAction: TCloseAction);
+    procedure OnCloseSearchForm(const ClosedFormName: String; Sender: TObject; var CloseAction: TCloseAction);
 
   public
     constructor Create(anOwner: TComponent); override;
@@ -63,36 +63,38 @@ begin
   end;
 end;
 
-procedure TMainForm.PrintAllSearchForms;
+procedure TMainForm.PrintAllSearchForms(const ClosedForm: String = '');
 var
    i: Integer;
 begin
   SearchFormsList.Clear;
 
   for i := 0 to Application.ComponentCount - 1 do begin
-    if Application.Components[i] is TSearchForm then begin
+    if (Application.Components[i] is TSearchForm)
+       and ((Application.Components[i] as TSearchForm).Name <> ClosedForm)  then begin
       SearchFormsList.Items.Add((Application.Components[i] as TSearchForm).Name);
     end;
   end;
 
 end;
 
-procedure TMainForm.OnCloseSearchForm(Sender: TObject;
+procedure TMainForm.OnCloseSearchForm(const ClosedFormName: String; Sender: TObject;
   var CloseAction: TCloseAction);
 begin
-  PrintAllSearchForms;
+ // Передаем в качестве параметра форма которая будет закрыта
+  PrintAllSearchForms(ClosedFormName);
 end;
 
 
 procedure TMainForm.CreateSearchFormButtonClick(Sender: TObject);
 begin
-  ShowSearchForm(Owner, FText);
+  ShowSearchForm(Owner, FText, @OnCloseSearchForm);
   PrintAllSearchForms;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  //
+
 end;
 
 end.

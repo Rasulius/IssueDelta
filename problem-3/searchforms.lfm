@@ -1,18 +1,18 @@
 object SearchForm: TSearchForm
   Left = 321
-  Height = 412
+  Height = 457
   Top = 282
-  Width = 582
+  Width = 592
   Caption = 'SearchForm'
-  ClientHeight = 412
-  ClientWidth = 582
+  ClientHeight = 457
+  ClientWidth = 592
   OnClose = FormClose
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.2.2.0'
   object DocumentMemo: TMemo
     Left = 8
-    Height = 226
+    Height = 171
     Top = 74
-    Width = 566
+    Width = 576
     Align = alTop
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Left = 8
@@ -32,22 +32,22 @@ object SearchForm: TSearchForm
     Left = 0
     Height = 66
     Top = 0
-    Width = 582
+    Width = 592
     Align = alTop
     ClientHeight = 66
-    ClientWidth = 582
+    ClientWidth = 592
     TabOrder = 1
     object SearchLine: TEdit
       Left = 8
-      Height = 23
+      Height = 25
       Top = 5
-      Width = 467
+      Width = 477
       Anchors = [akTop, akLeft, akRight]
       TabOrder = 0
       TextHint = 'Введите строку поиска'
     end
     object FindFirstButton: TButton
-      Left = 480
+      Left = 490
       Height = 25
       Top = 5
       Width = 91
@@ -57,7 +57,7 @@ object SearchForm: TSearchForm
       TabOrder = 1
     end
     object FindNextButton: TButton
-      Left = 481
+      Left = 491
       Height = 25
       Top = 32
       Width = 91
@@ -69,10 +69,10 @@ object SearchForm: TSearchForm
   end
   object Statistic: TLabel
     Left = 8
-    Height = 15
-    Top = 300
-    Width = 566
-    Align = alTop
+    Height = 17
+    Top = 284
+    Width = 576
+    Align = alBottom
     BorderSpacing.Left = 8
     BorderSpacing.Right = 8
     Caption = 'Статистика:'
@@ -80,14 +80,24 @@ object SearchForm: TSearchForm
   end
   object ReportBox: TListBox
     Left = 8
-    Height = 84
-    Top = 320
-    Width = 566
+    Height = 148
+    Top = 301
+    Width = 576
     Align = alBottom
     BorderSpacing.Left = 8
     BorderSpacing.Right = 8
     BorderSpacing.Bottom = 8
     ItemHeight = 0
     TabOrder = 2
+  end
+  object CleanButton: TButton
+    Left = 8
+    Height = 25
+    Top = 253
+    Width = 75
+    Anchors = [akLeft, akBottom]
+    Caption = 'Очиcтить'
+    OnClick = CleanButtonClick
+    TabOrder = 3
   end
 end

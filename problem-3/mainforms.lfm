@@ -7,7 +7,7 @@ object MainForm: TMainForm
   ClientHeight = 361
   ClientWidth = 389
   OnCreate = FormCreate
-  LCLVersion = '2.0.10.0'
+  LCLVersion = '2.2.2.0'
   object SearchFormsList: TListBox
     Left = 8
     Height = 342
