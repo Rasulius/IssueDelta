@@ -8,6 +8,7 @@
       <Unit0>
         <Filename Value="SearchFormProject.lpr"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <CursorPos X="33" Y="14"/>
         <UsageCount Value="55"/>
         <Loaded Value="True"/>
@@ -29,10 +30,7 @@
         <ComponentName Value="SearchForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="180"/>
-        <CursorPos X="60" Y="187"/>
         <UsageCount Value="55"/>
         <Bookmarks Count="1">
           <Item0 Y="117" ID="1"/>
@@ -115,142 +113,136 @@
       <Unit13>
         <Filename Value="C:\lazarus\components\lazutils\lazutf8.pas"/>
         <UnitName Value="LazUTF8"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1083"/>
         <CursorPos Y="1100"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit13>
       <Unit14>
         <Filename Value="C:\lazarus\lcl\interfaces\win32\win32listsl.inc"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="119"/>
         <CursorPos Y="135"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit14>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="27">
       <Position1>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="311" TopLine="294"/>
+        <Caret Line="312" TopLine="294"/>
       </Position1>
       <Position2>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="312" TopLine="294"/>
+        <Caret Line="314" TopLine="294"/>
       </Position2>
       <Position3>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="314" TopLine="294"/>
+        <Caret Line="292" TopLine="272"/>
       </Position3>
       <Position4>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="292" TopLine="272"/>
+        <Caret Line="202" TopLine="182"/>
       </Position4>
       <Position5>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="202" TopLine="182"/>
+        <Caret Line="289" TopLine="274"/>
       </Position5>
       <Position6>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="289" TopLine="274"/>
+        <Caret Line="202" TopLine="186"/>
       </Position6>
       <Position7>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="202" TopLine="186"/>
+        <Caret Line="209" TopLine="186"/>
       </Position7>
       <Position8>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="209" TopLine="186"/>
+        <Caret Line="210" TopLine="186"/>
       </Position8>
       <Position9>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="210" TopLine="186"/>
+        <Caret Line="149" TopLine="133"/>
       </Position9>
       <Position10>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="149" TopLine="133"/>
+        <Caret Line="210" Column="23" TopLine="178"/>
       </Position10>
       <Position11>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="210" Column="23" TopLine="178"/>
+        <Caret Line="79" Column="23" TopLine="60"/>
       </Position11>
       <Position12>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="79" Column="23" TopLine="60"/>
+        <Caret Line="154" Column="60" TopLine="130"/>
       </Position12>
       <Position13>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="154" Column="60" TopLine="130"/>
+        <Caret Line="128" Column="7" TopLine="112"/>
       </Position13>
       <Position14>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="128" Column="7" TopLine="112"/>
+        <Caret Line="169" Column="22" TopLine="151"/>
       </Position14>
       <Position15>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="169" Column="22" TopLine="151"/>
+        <Caret Line="63" Column="25" TopLine="41"/>
       </Position15>
       <Position16>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="63" Column="25" TopLine="41"/>
+        <Caret Line="128" Column="51" TopLine="111"/>
       </Position16>
       <Position17>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="128" Column="51" TopLine="111"/>
+        <Caret Line="149" Column="14" TopLine="133"/>
       </Position17>
       <Position18>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="149" Column="14" TopLine="133"/>
+        <Caret Line="150" Column="51" TopLine="134"/>
       </Position18>
       <Position19>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="150" Column="51" TopLine="134"/>
+        <Caret Line="209" TopLine="195"/>
       </Position19>
       <Position20>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="209" TopLine="195"/>
+        <Caret Line="239" Column="3" TopLine="223"/>
       </Position20>
       <Position21>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="239" Column="3" TopLine="223"/>
+        <Caret Line="168" Column="21" TopLine="157"/>
       </Position21>
       <Position22>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="168" Column="21" TopLine="157"/>
+        <Caret Line="203" TopLine="188"/>
       </Position22>
       <Position23>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="203" TopLine="188"/>
+        <Caret Line="211" TopLine="188"/>
       </Position23>
       <Position24>
-        <Filename Value="C:\lazarus\lcl\interfaces\win32\win32listsl.inc"/>
-        <Caret Line="135" TopLine="119"/>
+        <Filename Value="searchforms.pas"/>
+        <Caret Line="240" Column="26" TopLine="226"/>
       </Position24>
       <Position25>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="211" TopLine="188"/>
+        <Caret Line="81" Column="17" TopLine="63"/>
       </Position25>
       <Position26>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="240" Column="26" TopLine="226"/>
+        <Caret Line="308" Column="19" TopLine="290"/>
       </Position26>
       <Position27>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="81" Column="17" TopLine="63"/>
+        <Caret Line="323" Column="19" TopLine="298"/>
       </Position27>
       <Position28>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="308" Column="19" TopLine="290"/>
+        <Caret Line="259" TopLine="242"/>
       </Position28>
       <Position29>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="323" Column="19" TopLine="298"/>
+        <Caret Line="228" Column="65" TopLine="228"/>
       </Position29>
-      <Position30>
-        <Filename Value="searchforms.pas"/>
-        <Caret Line="259" TopLine="242"/>
-      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>

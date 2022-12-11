@@ -8,7 +8,6 @@
       <Unit0>
         <Filename Value="SearchFormProject.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <CursorPos X="33" Y="14"/>
         <UsageCount Value="55"/>
         <Loaded Value="True"/>
@@ -30,7 +29,10 @@
         <ComponentName Value="SearchForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
+        <TopLine Value="7"/>
+        <CursorPos Y="31"/>
         <UsageCount Value="55"/>
         <Bookmarks Count="1">
           <Item0 Y="117" ID="1"/>
@@ -126,7 +128,7 @@
         <UsageCount Value="10"/>
       </Unit14>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="27">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="searchforms.pas"/>
         <Caret Line="312" TopLine="294"/>
@@ -241,7 +243,7 @@
       </Position28>
       <Position29>
         <Filename Value="searchforms.pas"/>
-        <Caret Line="228" Column="65" TopLine="228"/>
+        <Caret Line="31" TopLine="16"/>
       </Position29>
     </JumpHistory>
     <RunParams>

@@ -28,7 +28,6 @@ type
     ReportBox: TListBox;
     DocumentMemo: TMemo;
     TopPanel: TPanel;
-    procedure BitBtn1Click(Sender: TObject);
     procedure CleanButtonClick(Sender: TObject);
     procedure FindFirstButtonClick(Sender: TObject);
     procedure FindNextButtonClick(Sender: TObject);
@@ -76,9 +75,10 @@ type
     procedure ShowStatus();
   public
     constructor Create(CreateSuspendedThread: Boolean;aSearchSetting: TSearchSettigns; const UnicalEventName: String; WaitingTime: Integer = 100);
+    destructor Destroy; override;
+
     procedure Init(const FindText: String; AllText: TStrings; Offset: Integer = 1; PortionIndex: Integer = 0);
 
-    destructor Destroy; override;
     property OnShowStatus: TShowStatusEvent read FOnShowStatus write FOnShowStatus;
   end;
 
@@ -130,11 +130,6 @@ begin
   FTextSearcher.Init(SearchLine.Text, DocumentMemo.Lines, 1, 0);
   FTextSearcher.OnShowStatus:= @OnFindText;
   FTextSearcher.Start;
-end;
-
-procedure TSearchForm.BitBtn1Click(Sender: TObject);
-begin
-
 end;
 
 procedure TSearchForm.CleanButtonClick(Sender: TObject);
